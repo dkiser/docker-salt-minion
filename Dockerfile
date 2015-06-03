@@ -8,7 +8,8 @@ RUN echo "create salt user and directories" \
     && groupadd -r salt \
     && useradd  -r -g salt salt \
     && mkdir -p \
-      /etc/salt \
+      /etc/salt/pki \
+      /etc/salt/minion.d \
       /var/log/salt \
       /var/cache/salt \
       /var/run/salt \
@@ -53,7 +54,7 @@ RUN pip install \
   salt==$SALT_VERSION
 
 # Volumes
-VOLUME ["/etc/salt"]
+VOLUME ["/etc/salt", "/etc/salt/pki", "/var/cache/salt", "/var/log/salt", "/etc/salt/minion.d"]
 
 # Run as non privileged user
 USER salt

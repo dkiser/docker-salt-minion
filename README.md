@@ -2,6 +2,8 @@
 
 A Docker image which allows you to run a containerized Salt-Minion for testing with a master.
 
+>NOTE: salt minion config must have ```user: salt``` as this container runs unprivileged!
+
 ## Running the Container
 
 You can easily run the container like so:
@@ -20,7 +22,11 @@ There are several volumes which can be mounted to Docker data container as
 described here: https://docs.docker.com/userguide/dockervolumes/. The following
 volumes can be mounted:
 
- * `/etc/salt` - This contains the minion config file and/or grains
+* `/etc/salt` - This contains the minion config file and/or grains
+* `/etc/salt/pki` - This holds the Salt Minion authentication keys
+* `/var/cache/salt` - Job and Minion data cache
+* `/var/log/salt` - Salts log directory
+* `/etc/salt/minion.d` - Minion configuration include directory
 
 ### Data Container
 
@@ -34,7 +40,7 @@ This will create a stopped container wwith the name of `salt-minoin-data` and
 will hold our persistent salt minion data. Now we just need to run our minion
 container with the `--volumes-from` command:
 
-    docker run --rm -it --volume-from salt-minion-data dkiser/salt-minion
+    docker run --rm -it --volumes-from salt-minion-data dkiser/salt-minion
 
 >Make sure /etc/salt/minion and optionally /etc/salt/grains exists in your data container!
 
